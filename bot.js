@@ -83,7 +83,7 @@ const CONFIG = {
     kindflow: {
       name: 'KindFlow',
       tagline: 'Give Kindness. Build Wealth.',
-      link: 'https://wa.me/256784277664?text=I+want+to+join+KindFlow',
+      link: 'https://user.kindflow.world/register?sponsor=0x13f93855D5131E0e58eFb9AeB96036ED5a14F077',
       wa_channel: 'https://whatsapp.com/channel/0029VaYj81GLSmbe9xU1zh3i',
       keywords: ['KINDFLOW','KIND COIN','KINDCOIN','CROWDFUND','P2P','BSC','KINDNESS','KIND'],
       emoji: '💝',
@@ -110,7 +110,7 @@ Africa Team products:
 1. Coinverse — prediction markets, 100 USDW free airdrop, link: https://coinverse-landing.vercel.app/
 2. UTrading AI — AI crypto trading 24/7, referral code AFRICA, link: https://utrading.ai/AFRICA
 3. Eropia DeFi 4.0 — stake USDC up to 12X returns. Staking code AFRICA (eropia.finance?ref=AFRICA). NFT code U13F93855 (eropia.finance?ref=U13F93855). 2X minimum guaranteed.
-4. KindFlow — P2P crowdfunding on BSC, start from $25 USDT BEP20, mine KindCoin, contact Coach: wa.me/256784277664
+4. KindFlow — P2P crowdfunding on BSC, start from $25 USDT BEP20, mine KindCoin. Direct link: https://user.kindflow.world/register?sponsor=0x13f93855D5131E0e58eFb9AeB96036ED5a14F077
 5. Africa Team community — WhatsApp channel: whatsapp.com/channel/0029VaYj81GLSmbe9xU1zh3i
 
 Your role:
