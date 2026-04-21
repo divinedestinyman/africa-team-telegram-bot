@@ -99,7 +99,7 @@ const CONFIG = {
       name: 'Africa Team',
       tagline: 'Multiple Income Streams. One Community.',
       wa_channel: 'https://whatsapp.com/channel/0029VaYj81GLSmbe9xU1zh3i',
-      keywords: ['AFRICA TEAM','JOIN','COMMUNITY','COACH','START','HELP','INCOME','ALL PRODUCTS'],
+      keywords: ['AFRICA TEAM','JOIN','COMMUNITY','COACH','START','HELP','INCOME','ALL PRODUCTS','HUB','WEBSITE'],
       emoji: '🌍',
     }
   },
@@ -112,6 +112,7 @@ Africa Team products:
 3. Eropia DeFi 4.0 — stake USDC up to 12X returns. Staking code AFRICA (eropia.finance?ref=AFRICA). NFT code U13F93855 (eropia.finance?ref=U13F93855). 2X minimum guaranteed.
 4. KindFlow — P2P crowdfunding on BSC, start from $25 USDT BEP20, mine KindCoin. Direct link: https://user.kindflow.world/register?sponsor=0x13f93855D5131E0e58eFb9AeB96036ED5a14F077
 5. Africa Team community — WhatsApp channel: whatsapp.com/channel/0029VaYj81GLSmbe9xU1zh3i
+6. Africa Team Hub (all products in one place): https://africateam-hub.vercel.app
 
 Your role:
 - Answer questions clearly and simply about any product
@@ -200,13 +201,15 @@ function buildProductCard(key) {
 
     kindflow: `💝 *KindFlow*\n_Give Kindness. Build Wealth._\n\n✅ 100% decentralised P2P on Binance Smart Chain\n✅ Start from just *$25 USDT BEP20*\n✅ Instant smart contract payouts to your wallet\n✅ Mine *KindCoin* before public listing!\n\n📱 *Contact Coach to join:* wa.me/256784277664\n\n_Reply HOW to get step-by-step instructions_`,
 
-    africateam: `🌍 *Africa Team — Coach's Income Empire*\n_Multiple Income Streams. One Community._\n\n4 active income streams running simultaneously:\n\n🔮 *COINVERSE* — predict & earn (100 USDW free)\n🤖 *UTRADING* — AI trades for you (code AFRICA)\n⚡ *EROPIA* — stake USDC, earn up to 12X\n💝 *KINDFLOW* — give & receive from $25\n\n📢 *Join Africa Team:*\nwhatsapp.com/channel/0029VaYj81GLSmbe9xU1zh3i\n\n_Which product interests you most?_`
+    africateam: `🌍 *Africa Team — Coach's Income Empire*\n_Multiple Income Streams. One Community._\n\n4 active income streams running simultaneously:\n\n🔮 *COINVERSE* — predict & earn (100 USDW free)\n🤖 *UTRADING* — AI trades for you (code AFRICA)\n⚡ *EROPIA* — stake USDC, earn up to 12X\n💝 *KINDFLOW* — give & receive from $25\n\n📢 *Join Africa Team:*\nwhatsapp.com/channel/0029VaYj81GLSmbe9xU1zh3i\n\n🔗 *Full hub:* https://africateam-hub.vercel.app\n\n_Which product interests you most?_`
   };
   return cards[key] || null;
 }
 
 function buildWelcome(firstName) {
-  return `👋 Hello ${firstName || 'Champion'}!\n\n🌍 *Welcome to Africa Team Bot*\n\n_Coach's AI assistant for multiple income streams._\n\nWe run 4 active opportunities:\n🔮 *COINVERSE* — predict crypto, earn rewards\n🤖 *UTRADING* — AI trades 24/7 for you\n⚡ *EROPIA* — stake USDC, earn up to 12X\n💝 *KINDFLOW* — give kindness, build wealth\n\nTap a button below or type any question 👇`;
+  return `👋 Hello ${firstName || 'Champion'}!\n\n🌍 *Welcome to Africa Team Bot*\n\n_Coach's AI assistant for multiple income streams._\n\nWe run 4 active opportunities:\n🔮 *COINVERSE* — predict crypto, earn rewards\n🤖 *UTRADING* — AI trades 24/7 for you\n⚡ *EROPIA* — stake USDC, earn up to 12X\n💝 *KINDFLOW* — give kindness, build wealth\n\nTap a button or visit our hub 👇
+
+🔗 https://africateam-hub.vercel.app`;
 }
 
 const MAIN_KEYBOARD = {
@@ -273,7 +276,9 @@ bot.onText(/\/coach/, async (msg) => {
 
 bot.onText(/\/signals/, async (msg) => {
   await send(msg.chat.id,
-    `📊 *Africa Team Signal Channels*\n\n🔮 Coinverse: t.me/CoinverseSignal\n🤖 UTrading: t.me/utradingsignals\n⚡ Eropia: t.me/eropiachannnel\n💝 KindFlow: t.me/kindflow\n🌍 Africa Team: t.me/africateamhub\n\n_Join all channels to never miss a signal._`
+    `📊 *Africa Team Signal Channels*\n\n🔮 Coinverse: t.me/CoinverseSignal\n🤖 UTrading: t.me/utradingsignals\n⚡ Eropia: t.me/eropiachannnel\n💝 KindFlow: t.me/kindflow\n🌍 Africa Team: t.me/africateamhub\n\n_Join all channels to never miss a signal._
+
+🌍 *Full Africa Team Hub:* https://africateam-hub.vercel.app`
   );
 });
 
