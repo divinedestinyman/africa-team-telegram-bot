@@ -88,12 +88,12 @@ const CONFIG = {
     kindflow: {
       name: 'KindFlow',
       tagline: 'Give Kindness. Build Wealth.',
-      link: 'https://wa.me/256784277664?text=I+want+to+join+KindFlow',
+      link: 'https://user.kindflow.world/register?sponsor=0x13f93855D5131E0e58eFb9AeB96036ED5a14F077',
       wa_channel: 'https://whatsapp.com/channel/0029VaYj81GLSmbe9xU1zh3i',
       keywords: ['KINDFLOW', 'KIND COIN', 'KINDCOIN', 'CROWDFUND', 'P2P', 'BSC', 'KINDNESS'],
       emoji: '💝',
       faq: {
-        'how do i start': '3 Steps:\n1️⃣ Choose your Kindness Plan ($25 minimum)\n2️⃣ Load USDT BEP20 into TrustWallet or MetaMask\n3️⃣ Message Coach for your referrer ID to register\n\n📱 wa.me/256784277664',
+        'how do i start': '3 Steps:\n1️⃣ Choose your Kindness Plan ($25 minimum)\n2️⃣ Load USDT BEP20 into TrustWallet or MetaMask\n3️⃣ Register using sponsor link\n\n🔗 https://user.kindflow.world/register?sponsor=0x13f93855D5131E0e58eFb9AeB96036ED5a14F077',
         'what is kindcoin': 'KindCoin is the currency of humanity — 200M total supply, cannot be bought, only MINED through giving. When you purchase a kindness plan, you earn KindCoin automatically. Early miners get the best advantage before public listing.',
         'how much can i earn': 'Plans range $25 to $8,000. Full earnings potential at maximum depth: $29.9 million. Start small, earn from the community giving back, and accumulate KindCoin while it\'s still cheap.',
         'is it legit': 'KindFlow is 100% decentralised peer-to-peer — no admin controls payments. Smart contracts handle everything instantly on Binance Smart Chain. No admin can manipulate payouts. Transparent blockchain — you see every transaction.',
@@ -116,7 +116,7 @@ Africa Team products:
 1. Coinverse — prediction markets, 100 USDW free airdrop, link: coinverse-landing.vercel.app
 2. UTrading AI — AI crypto trading 24/7, referral code AFRICA, link: utrading.ai/AFRICA
 3. Eropia DeFi 4.0 — stake USDC up to 12X returns, staking code AFRICA (eropia.finance?ref=AFRICA), NFT code U13F93855 (eropia.finance?ref=U13F93855)
-4. KindFlow — P2P crowdfunding on BSC, give $25+ in USDT BEP20, earn KindCoin
+4. KindFlow — P2P crowdfunding on BSC, register: user.kindflow.world/register?sponsor=0x13f93855D5131E0e58eFb9AeB96036ED5a14F077
 5. Africa Team — the community hub, WhatsApp channel: whatsapp.com/channel/0029VaYj81GLSmbe9xU1zh3i
 
 Your role:
@@ -133,6 +133,7 @@ Your role:
 // ── HTTP HEALTH SERVER (Railway requires a port listener) ──────────────────────
 const http = require('http');
 const PORT = process.env.PORT || 3000;
+const WEBHOOK_PATH = '/telegram-webhook';
 
 const healthServer = http.createServer((req, res) => {
   if (req.url === '/api/health' || req.url === '/health' || req.url === '/') {
@@ -140,10 +141,20 @@ const healthServer = http.createServer((req, res) => {
     res.end(JSON.stringify({
       status: 'ok',
       service: 'Africa Team Bot',
-      mode: 'webhook',
+      mode: CONFIG.WEBHOOK_URL ? 'webhook' : 'polling',
       uptime: process.uptime(),
       timestamp: new Date().toISOString()
     }));
+  } else if (req.method === 'POST' && req.url === WEBHOOK_PATH) {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        bot.processUpdate(JSON.parse(body));
+      } catch(e) { console.error('processUpdate error:', e.message); }
+      res.writeHead(200);
+      res.end('ok');
+    });
   } else {
     res.writeHead(404);
     res.end('Not found');
@@ -159,26 +170,11 @@ let bot;
 if (CONFIG.WEBHOOK_URL) {
   // Webhook mode: Railway sets WEBHOOK_URL env var
   bot = new TelegramBot(CONFIG.TELEGRAM_TOKEN, { webHook: { port: false } });
-  const webhookPath = '/telegram-webhook';
   // Register webhook with Telegram
-  bot.setWebHook(CONFIG.WEBHOOK_URL + webhookPath).then(() => {
-    console.log('Webhook registered: ' + CONFIG.WEBHOOK_URL + webhookPath);
+  bot.setWebHook(CONFIG.WEBHOOK_URL + WEBHOOK_PATH).then(() => {
+    console.log('Webhook registered: ' + CONFIG.WEBHOOK_URL + WEBHOOK_PATH);
   }).catch(err => {
     console.error('Webhook registration failed:', err.message);
-  });
-  // Route incoming updates from health server
-  healthServer.on('request', (req, res) => {
-    if (req.method === 'POST' && req.url === webhookPath) {
-      let body = '';
-      req.on('data', chunk => { body += chunk; });
-      req.on('end', () => {
-        try {
-          bot.processUpdate(JSON.parse(body));
-        } catch(e) { console.error('processUpdate error:', e.message); }
-        res.writeHead(200);
-        res.end('ok');
-      });
-    }
   });
 } else {
   // Polling mode (local dev / fallback)
@@ -224,7 +220,7 @@ async function askClaude(userMessage, productContext) {
       : 'The user has not specified a product yet.';
 
     const response = await axios.post('https://api.anthropic.com/v1/messages', {
-      model: 'claude-sonnet-4-5-20250929',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 300,
       system: CONFIG.COACH_SYSTEM_PROMPT,
       messages: [{ role: 'user', content: `${contextHint}\n\nUser message: ${userMessage}` }]
@@ -307,7 +303,7 @@ _${p.tagline}_
 ✅ Instant smart contract payouts
 ✅ Mine KindCoin before listing!
 
-📱 *Contact Coach to join:* wa.me/256784277664
+🔗 *Register:* user.kindflow.world/register?sponsor=0x13f93855D5131E0e58eFb9AeB96036ED5a14F077
 
 Reply HOW to get step-by-step instructions`,
     africateam: `${p.emoji} *${p.name}*
@@ -333,9 +329,7 @@ bot.onText(/\/start/, async (msg) => {
   const chatId = msg.chat.id;
   const firstName = msg.from?.first_name || 'Champion';
 
-  const welcomeText = `👋 Hello ${firstName}!
-
-${buildWelcomeMessage()}`;
+  const welcomeText = `👋 Hello ${firstName}!\n\n${buildWelcomeMessage()}`;
 
   await bot.sendMessage(chatId, welcomeText, {
     parse_mode: 'Markdown',
@@ -468,9 +462,7 @@ bot.on('callback_query', async (query) => {
   if (data.startsWith('ask_')) {
     const productKey = data.replace('ask_', '');
     await bot.sendMessage(chatId,
-      `🧠 Ask me anything about ${CONFIG.PRODUCTS[productKey]?.name || productKey}!
-
-Just type your question below and Coach's AI will answer immediately.`,
+      `🧠 Ask me anything about ${CONFIG.PRODUCTS[productKey]?.name || productKey}!\n\nJust type your question below and Coach's AI will answer immediately.`,
       { parse_mode: 'Markdown' }
     );
   }
@@ -483,11 +475,7 @@ bot.on('new_chat_members', async (msg) => {
     if (member.is_bot) continue;
     const name = member.first_name || 'Champion';
     await bot.sendMessage(chatId,
-      `🌍 Welcome ${name} to Africa Team!
-
-You've joined a community building multiple income streams together.
-
-Type /start to see all our opportunities, or /help for commands.`,
+      `🌍 Welcome ${name} to Africa Team!\n\nYou've joined a community building multiple income streams together.\n\nType /start to see all our opportunities, or /help for commands.`,
       { parse_mode: 'Markdown' }
     );
   }
